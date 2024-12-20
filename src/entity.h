@@ -12,12 +12,16 @@ public:
     virtual unsigned get_width() const { return width; }
     virtual unsigned get_height() const { return height; }
 
-    virtual bool outofbound() const { return left + width < 0; }
-
 protected:
     // each entity has a position of top-left corner
-    int top, left;
-    int width, height;
+    unsigned top, left;
+    unsigned width, height;
+};
+
+class CollidableEntity : public Entity {
+    // only those who should be considered to be a obstacle can crash
+public:
+    virtual bool crashed(const CollidableEntity& other) const = 0;
 };
 
 #endif // ENTITY_H_

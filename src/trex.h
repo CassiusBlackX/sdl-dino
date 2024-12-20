@@ -3,10 +3,11 @@
 
 #include "entity.h"
 
-class Trex : public Entity {
+class Trex : public CollidableEntity {
 public:
-    Trex(int scale, int y_speed, int initial_y, int jump_height);
+    Trex(int scale, int y_speed, int jump_height);
     ~Trex() = default;
+
     void update(unsigned* framebuffer) override;
     void start() override { status = RUNNING; }
     void reset() override { status = HALTING; top = initial_y; }
@@ -16,17 +17,16 @@ public:
     unsigned get_width() const override { return width; }
     unsigned get_height() const override { return height; }
 
-    bool outofbound() const { return false; }  // dino never out of bound
+    bool crashed(const CollidableEntity& other) const override;
 
     void jump();
-private:
-    bool crashed(const Entity& cactus) const;
 
 private:
-    enum Status {RUNNING, JUMPING, FALLING, HALTING, CRASHED};
+    enum Status {RUNNING, JUMPING, HALTING, CRASHED};
     Status status;  // only can jump when RUNNING
     int initial_y;
     int y_speed;
+    int velocity_y;
     int scale;
     int jump_height;  // max height of jump
     static int pixels[][420];  // 21x20 pixels

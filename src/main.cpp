@@ -8,10 +8,10 @@
 #include "entity.h"
 #include "trex.h"
 #include "cactus.h"
+#include "ground.h"
 #include "utils.h"
 
 unsigned framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];
-
 
 void render_game(SDL_Renderer* renderer, SDL_Texture* texture, uint32_t* framebuffer) {
     SDL_UpdateTexture(texture, NULL, framebuffer, SCREEN_WIDTH * sizeof(uint32_t));
@@ -46,14 +46,15 @@ int main(int argc, char* args[]) {
     // Clear the framebuffer
     memset(framebuffer, 0, sizeof(framebuffer));
 
-    // Trex trex(3, 1, SCREEN_HEIGHT-70-21*3, 100);
-    // trex.start();
-    Cactus cactus(1, 0, 1);
-    
+    Trex trex(3, 20, 150);
+    Cactus cactus(3, 0, 10);
+    Ground ground(10, 30, 10);
 
     bool quit = false;
+    bool crashed = false;
     SDL_Event e;
     Uint32 start_time = 0;
+    Uint32 frame_time = 0;
 
     while (!quit) {
         start_time = SDL_GetTicks();
@@ -69,12 +70,13 @@ int main(int argc, char* args[]) {
                             quit = true;
                             break;
                         case SDLK_SPACE:
-                            printf("Jump\n");
-                            // trex.jump();  // delay jump for 10 frames
+                            trex.jump();  // delay jump for 10 frames
                             break;
                         case SDLK_UP:
                             std::cout << "start" << std::endl;
-                            // trex.start();
+                            cactus.start();
+                            trex.start();
+                            ground.start();
                             break;
                     }
             }
@@ -84,15 +86,29 @@ int main(int argc, char* args[]) {
         // Clear the framebuffer
         memset(framebuffer, 0, sizeof(framebuffer));
 
-        // trex.update(framebuffer);
+        // Update game state
+        trex.update(framebuffer);
         cactus.update(framebuffer);
-        // Draw the current frame of the dinosaur
-        // draw_dinosaur_frame(frame, 0, 0); // Position the dinosaur at (100, 100)
+        if (cactus.outofbound()) {
+            cactus.reset();
+        }
+        ground.update(framebuffer);
+        if (trex.crashed(cactus)) {
+            crashed = true;
+        }
 
         // Render game state
         render_game(renderer, texture, framebuffer);
-
         SDL_RenderPresent(renderer);
+
+        // Calculate frame time and delay to maintain frame rate
+        frame_time = SDL_GetTicks() - start_time;
+        // std::cout << frame_time << std::endl;
+        Uint32 expected_time = 1000 / FPS;
+        if (frame_time < expected_time) {
+            SDL_Delay(expected_time - frame_time);
+        }
+        std::cout << "toatl time: " << SDL_GetTicks() - start_time << std::endl;
 
     }
 

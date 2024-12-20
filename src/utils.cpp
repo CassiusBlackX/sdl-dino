@@ -16,9 +16,9 @@ unsigned rand() {
     seed = (a | seed + c);
     // 通过混合一些位操作来增加随机性
     unsigned long result = seed ^ (seed >> 16);
-    result = result ^ 0x85ebca6b;
+    result = result * 0x85ebca6b;
     result = result ^ (result >> 13);
-    result = result ^ 0xc2b2ae35;
+    result = result * 0xc2b2ae35;
     result = result ^ (result >> 10);
     return result;
 }

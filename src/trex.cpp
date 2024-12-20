@@ -17,23 +17,34 @@ int Trex::pixels[][420] = {
     }
 };
 
-Trex::Trex(int scale, int s, int i, int h) : scale(scale), y_speed(s), initial_y(i), jump_height(h), status(HALTING) {
-    top = i;
-    left = 0;
+Trex::Trex(int scale, int s, int h) : scale(scale), y_speed(s), jump_height(h), status(HALTING) {
     width = 21 * scale;
     height = 20 * scale;
     frame_id = 0;
+    top = GROUND_Y_POS - height - GROUND_DISTANCE;
+    left = TREX_X_POS;
+    initial_y = top;
+    velocity_y = 0;
 }
-
 
 
 void Trex::jump() {
-    status = JUMPING;
+    if (status == RUNNING) {
+        status = JUMPING;
+        velocity_y = -y_speed;
+    }
 }
 
-bool Trex::crashed(const Entity& obstacle) const {
-    return (top + height > obstacle.get_top() && top < obstacle.get_top() + obstacle.get_height() &&
-            left + width > obstacle.get_left() && left < obstacle.get_left() + obstacle.get_width());
+bool Trex::crashed(const CollidableEntity& obstacle) const {
+    unsigned bottom1 = top + height;
+    unsigned right1 = left + width;
+    unsigned bottom2 = obstacle.get_top() + obstacle.get_height();
+    unsigned right2 = obstacle.get_left() + obstacle.get_width();
+
+    if (left >= right2 || obstacle.get_left() >= right1 || top >= bottom2 || obstacle.get_top() >= bottom1) {
+        return false;
+    }
+    return true;
 }
 
 void Trex::update(unsigned* framebuffer) {
@@ -42,19 +53,12 @@ void Trex::update(unsigned* framebuffer) {
             frame_id = (frame_id + 1) % 3;
             break;
         case JUMPING:
-            if (top > initial_y - jump_height) {
-                top -= y_speed;
-            } else {
-                status = FALLING;
-            }
-            frame_id = (frame_id + 1) % 3;
-            break;
-        case FALLING:
-            if (top < initial_y) {
-                top += y_speed;
-            } else {
+            velocity_y += GRAVITY;
+            top += velocity_y;
+            if (top >= initial_y) {
                 top = initial_y;
                 status = RUNNING;
+                velocity_y = 0;
             }
             frame_id = (frame_id + 1) % 3;
             break;
