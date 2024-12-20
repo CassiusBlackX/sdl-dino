@@ -12,10 +12,10 @@ public:
     void start() override { status = RUNNING; }
     void reset() override { status = HALTING; top = initial_y; }
 
-    unsigned get_top() const override { return top; }
-    unsigned get_left() const override { return left; }
-    unsigned get_width() const override { return width; }
-    unsigned get_height() const override { return height; }
+    int get_top() const override { return top; }
+    int get_left() const override { return left; }
+    int get_width() const override { return width; }
+    int get_height() const override { return height; }
 
     bool crashed(const CollidableEntity& other) const override;
 

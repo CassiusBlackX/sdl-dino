@@ -7,15 +7,15 @@ public:
     virtual void start() = 0;
     virtual void reset() = 0;
 
-    virtual unsigned get_top() const { return top; }
-    virtual unsigned get_left() const { return left; }
-    virtual unsigned get_width() const { return width; }
-    virtual unsigned get_height() const { return height; }
+    virtual int get_top() const { return top; }
+    virtual int get_left() const { return left; }
+    virtual int get_width() const { return width; }
+    virtual int get_height() const { return height; }
 
 protected:
     // each entity has a position of top-left corner
-    unsigned top, left;
-    unsigned width, height;
+    int top, left;
+    int width, height;
 };
 
 class CollidableEntity : public Entity {

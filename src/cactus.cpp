@@ -1,6 +1,6 @@
 #include "cactus.h"
 #include "utils.h"
-
+#include <iostream>
 namespace {
 
 const unsigned Cactus_0[] = {
@@ -85,7 +85,8 @@ void Cactus::update(unsigned* framebuffer) {
     }
 
     left -= x_speed;
-    if (left + width < 0) {
+    if (left + width < 0 || left > SCREEN_WIDTH) {
+        std::cout << "***********************out of bound!!!" << std::endl;
         return;
     }
 
@@ -94,7 +95,11 @@ void Cactus::update(unsigned* framebuffer) {
             unsigned color = pixel[i * origin_width + j];
             for (int dy = 0; dy < scale; ++dy) {
                 for (int dx = 0; dx < scale; ++dx) {
-                    utils::write_to_vga((top + i * scale + dy) * SCREEN_WIDTH + (left + j * scale + dx), color, framebuffer);
+                    int x = left + j * scale + dx;
+                    int y = top + i * scale + dy;
+                    if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT) {
+                        utils::write_to_vga(y * SCREEN_WIDTH + x, color, framebuffer);
+                    }
                 }
             }
         }

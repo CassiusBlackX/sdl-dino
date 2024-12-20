@@ -13,12 +13,12 @@ public:
     void start() override;
     void reset() override;
 
-    unsigned get_top() const override { return top; }
-    unsigned get_left() const override { return left; }
-    unsigned get_width() const override { return width * scale; }
-    unsigned get_height() const override { return height * scale; }
+    int get_top() const override { return top; }
+    int get_left() const override { return left; }
+    int get_width() const override { return width; }
+    int get_height() const override { return height; }
 
-    bool outofbound() const { return left + width < 0; }    
+    bool outofbound() const { return left + width < 0; }
     bool crashed(const CollidableEntity& obstacle) const override;
 
 private:

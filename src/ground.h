@@ -11,10 +11,10 @@ public:
     void start() override;
     void reset() override;
 
-    unsigned get_top() const override { return top; }
-    unsigned get_left() const override { return left; }
-    unsigned get_width() const override { return width; }
-    unsigned get_height() const override { return height; }
+    int get_top() const override { return top; }
+    int get_left() const override { return left; }
+    int get_width() const override { return width; }
+    int get_height() const override { return height; }
 
 private:
     int step;

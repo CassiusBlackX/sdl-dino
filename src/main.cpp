@@ -51,7 +51,6 @@ int main(int argc, char* args[]) {
     Ground ground(10, 30, 10);
 
     bool quit = false;
-    bool crashed = false;
     SDL_Event e;
     Uint32 start_time = 0;
     Uint32 frame_time = 0;
@@ -89,12 +88,16 @@ int main(int argc, char* args[]) {
         // Update game state
         trex.update(framebuffer);
         cactus.update(framebuffer);
+        std::cout << "cactus left: " << cactus.get_left() << " cactus right: " << cactus.get_left() + cactus.get_width() << std::endl;
         if (cactus.outofbound()) {
+            // std::cout << "***************cactus reset !!!!!" << std::endl;
             cactus.reset();
+            cactus.start();
         }
         ground.update(framebuffer);
+
         if (trex.crashed(cactus)) {
-            crashed = true;
+            quit = true;
         }
 
         // Render game state
@@ -108,7 +111,7 @@ int main(int argc, char* args[]) {
         if (frame_time < expected_time) {
             SDL_Delay(expected_time - frame_time);
         }
-        std::cout << "toatl time: " << SDL_GetTicks() - start_time << std::endl;
+        // std::cout << "toatl time: " << SDL_GetTicks() - start_time << std::endl;
 
     }
 
