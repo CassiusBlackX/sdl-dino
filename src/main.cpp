@@ -1,9 +1,5 @@
-#define SDL_MAIN_HANDLED
-
-#include <SDL.h>
-#include <stdio.h>
-#include <iostream>
-#include <string.h>
+#include "lib/mem.h"
+#include "lib/device.h"
 
 #include "entity.h"
 #include "trex.h"
@@ -13,35 +9,17 @@
 
 unsigned framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];
 
-void render_game(SDL_Renderer* renderer, SDL_Texture* texture, uint32_t* framebuffer) {
-    SDL_UpdateTexture(texture, NULL, framebuffer, SCREEN_WIDTH * sizeof(uint32_t));
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+// TODO
+void render_game(unsigned* framebuffer) {
+    for (int i = 0; i < SCREEN_HEIGHT; i++) {
+        for (int j = 0; j < SCREEN_WIDTH; j++) {
+            set_vram(j, i, framebuffer[i * SCREEN_WIDTH + j]);
+        }
+    }
+    commit_vram();
 }
-
 int main(int argc, char* args[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    SDL_Window* window = SDL_CreateWindow("SDL Dino Animation", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (!window) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
-        printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-
-    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
-    if (!texture) {
-        printf("Texture could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
+    
 
     // Clear the framebuffer
     memset(framebuffer, 0, sizeof(framebuffer));
@@ -52,11 +30,11 @@ int main(int argc, char* args[]) {
 
     bool quit = false;
     SDL_Event e;
-    Uint32 start_time = 0;
-    Uint32 frame_time = 0;
+    unsigned start_time = 0;
+    unsigned frame_time = 0;
 
     while (!quit) {
-        start_time = SDL_GetTicks();
+        start_time = time();
 
         while (SDL_PollEvent(&e) != 0) {
             switch (e.type) {
@@ -98,22 +76,18 @@ int main(int argc, char* args[]) {
         }
 
         // Render game state
-        render_game(renderer, texture, framebuffer);
-        SDL_RenderPresent(renderer);
+        render_game(framebuffer);
 
         // Calculate frame time and delay to maintain frame rate
-        frame_time = SDL_GetTicks() - start_time;
-        Uint32 expected_time = 1000 / FPS;
+        // on bare metal we cannot maintain frame rate!
+        frame_time = time() - start_time;
+        unsigned expected_time = 1000 / FPS;
         if (frame_time < expected_time) {
-            SDL_Delay(expected_time - frame_time);
+            sleep(expected_time - frame_time);
         }
 
     }
 
-    SDL_DestroyTexture(texture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 
     return 0;
 }
