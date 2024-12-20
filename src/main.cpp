@@ -72,7 +72,6 @@ int main(int argc, char* args[]) {
                             trex.jump();  // delay jump for 10 frames
                             break;
                         case SDLK_UP:
-                            std::cout << "start" << std::endl;
                             cactus.start();
                             trex.start();
                             ground.start();
@@ -88,9 +87,7 @@ int main(int argc, char* args[]) {
         // Update game state
         trex.update(framebuffer);
         cactus.update(framebuffer);
-        std::cout << "cactus left: " << cactus.get_left() << " cactus right: " << cactus.get_left() + cactus.get_width() << std::endl;
         if (cactus.outofbound()) {
-            // std::cout << "***************cactus reset !!!!!" << std::endl;
             cactus.reset();
             cactus.start();
         }
@@ -106,12 +103,10 @@ int main(int argc, char* args[]) {
 
         // Calculate frame time and delay to maintain frame rate
         frame_time = SDL_GetTicks() - start_time;
-        // std::cout << frame_time << std::endl;
         Uint32 expected_time = 1000 / FPS;
         if (frame_time < expected_time) {
             SDL_Delay(expected_time - frame_time);
         }
-        // std::cout << "toatl time: " << SDL_GetTicks() - start_time << std::endl;
 
     }
 
