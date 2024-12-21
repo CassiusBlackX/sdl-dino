@@ -5,11 +5,11 @@
 #include "trex.h"
 #include "cactus.h"
 #include "ground.h"
+#include "score.h"
 #include "utils.h"
 
 unsigned framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];
 
-// TODO
 void render_game(unsigned* framebuffer) {
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
         for (int j = 0; j < SCREEN_WIDTH; j++) {
@@ -18,45 +18,39 @@ void render_game(unsigned* framebuffer) {
     }
     commit_vram();
 }
-int main(int argc, char* args[]) {
-    
 
+int main() {
     // Clear the framebuffer
     memset(framebuffer, 0, sizeof(framebuffer));
 
     Trex trex(3, 20, 150);
     Cactus cactus(3, 10);
     Ground ground(10, 30, 10);
+    Score score(1, 10); 
 
     bool quit = false;
-    SDL_Event e;
+    bool start = false;
+    bool jump = false;
     unsigned start_time = 0;
     unsigned frame_time = 0;
 
     while (!quit) {
         start_time = time();
 
-        while (SDL_PollEvent(&e) != 0) {
-            switch (e.type) {
-                case SDL_QUIT:
-                    quit = true;
-                    break;
-                case SDL_KEYDOWN:
-                    switch (e.key.keysym.sym) {
-                        case SDLK_ESCAPE:
-                            quit = true;
-                            break;
-                        case SDLK_SPACE:
-                            trex.jump();  // delay jump for 10 frames
-                            break;
-                        case SDLK_UP:
-                            cactus.start();
-                            trex.start();
-                            ground.start();
-                            break;
-                    }
+        if (get_button_state() != 0) {  // a button is pressed
+            jump = get_jump_button_state();
+            start = get_reset_button_state();
+
+            if (jump) {
+                trex.jump();
             }
 
+            if (start) {
+                trex.start();
+                ground.start();
+                cactus.start();
+                score.start();
+            }
         }
 
         // Clear the framebuffer
@@ -65,14 +59,22 @@ int main(int argc, char* args[]) {
         // Update game state
         trex.update(framebuffer);
         cactus.update(framebuffer);
+        ground.update(framebuffer);
+        score.update(framebuffer);
+
+        // check cactus out of bound
         if (cactus.outofbound()) {
             cactus.reset();
             cactus.start();
         }
-        ground.update(framebuffer);
 
+        // check crash
         if (trex.crashed(cactus)) {
-            quit = true;
+            start = false;
+            trex.reset();
+            ground.reset();
+            cactus.reset();
+            score.reset();
         }
 
         // Render game state
@@ -81,11 +83,10 @@ int main(int argc, char* args[]) {
         // Calculate frame time and delay to maintain frame rate
         // on bare metal we cannot maintain frame rate!
         frame_time = time() - start_time;
-        unsigned expected_time = 1000 / FPS;
+        unsigned expected_time = 1000000 / FPS;
         if (frame_time < expected_time) {
             sleep(expected_time - frame_time);
         }
-
     }
 
 

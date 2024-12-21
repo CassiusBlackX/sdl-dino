@@ -7,7 +7,11 @@
 #define GROUND_DISTANCE 3
 #define GRAVITY 1
 #define TREX_X_POS 50
+#define SCORE_UP_BOUND 5
+#define SCORE_RIGHT_BOUND 5
+#define SCORE_MAX_CHARS 8
 #define FPS 30
+
 namespace utils {
 
 void write_to_vga(unsigned address, unsigned value, unsigned * framebuffer);
