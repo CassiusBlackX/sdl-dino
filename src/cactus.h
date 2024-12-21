@@ -5,7 +5,7 @@
 #include "entity.h"
 class Cactus : public CollidableEntity {
 public: 
-    Cactus(int scale, int id, int x_speed);
+    Cactus(int scale, int x_speed);
     Cactus(const Cactus& other);
     ~Cactus() = default;
 

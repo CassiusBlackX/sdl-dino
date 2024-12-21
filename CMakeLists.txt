@@ -10,5 +10,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(SDL2 CONFIG REQUIRED)
 
 
-add_executable(${PROJECT_NAME} src/main.cpp src/trex.cpp src/utils.cpp src/cactus.cpp src/ground.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp src/trex.cpp src/utils.cpp src/cactus.cpp src/ground.cpp src/score.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)

@@ -25,7 +25,8 @@ constexpr unsigned max_obstacles = 2;
 
 }
 
-Cactus::Cactus(int scale, int id, int speed) : scale(scale), id(id), x_speed(speed), begin(false) {
+Cactus::Cactus(int scale, int speed) : scale(scale), x_speed(speed), begin(false) {
+    id = utils::rand() % 3;
     switch (id) {
         case 0:
             pixel = Cactus_0;
@@ -76,6 +77,29 @@ void Cactus::start() {
 
 void Cactus::reset() {
     begin = false;
+    id = utils::rand() % 3;
+    switch (id) {
+        case 0:
+            pixel = Cactus_0;
+            origin_width = width_0;
+            origin_height = height_0;
+            break;
+        case 1:
+            pixel = Cactus_1;
+            origin_width = width_1;
+            origin_height = height_1;
+            break;
+        case 2:
+            pixel = Cactus_2;
+            origin_width = width_2;
+            origin_height = height_2;
+            break;
+        default:
+            break;
+    }
+    width = origin_width * scale;
+    height = origin_height * scale;
+    top = GROUND_Y_POS - height - GROUND_DISTANCE;
     left = SCREEN_WIDTH;
 }
 

@@ -9,6 +9,7 @@
 #include "trex.h"
 #include "cactus.h"
 #include "ground.h"
+#include "score.h"
 #include "utils.h"
 
 unsigned framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];
@@ -47,10 +48,12 @@ int main(int argc, char* args[]) {
     memset(framebuffer, 0, sizeof(framebuffer));
 
     Trex trex(3, 20, 150);
-    Cactus cactus(3, 0, 10);
+    Cactus cactus(3, 10);
     Ground ground(10, 30, 10);
+    Score score(1, 10);
 
     bool quit = false;
+    bool reset = false;
     SDL_Event e;
     Uint32 start_time = 0;
     Uint32 frame_time = 0;
@@ -75,6 +78,7 @@ int main(int argc, char* args[]) {
                             cactus.start();
                             trex.start();
                             ground.start();
+                            score.start();
                             break;
                     }
             }
@@ -85,6 +89,7 @@ int main(int argc, char* args[]) {
         memset(framebuffer, 0, sizeof(framebuffer));
 
         // Update game state
+        score.update(framebuffer);
         trex.update(framebuffer);
         cactus.update(framebuffer);
         if (cactus.outofbound()) {
@@ -94,7 +99,11 @@ int main(int argc, char* args[]) {
         ground.update(framebuffer);
 
         if (trex.crashed(cactus)) {
-            quit = true;
+            reset = true;
+            trex.reset();
+            ground.reset();
+            cactus.reset();
+            score.reset();
         }
 
         // Render game state
