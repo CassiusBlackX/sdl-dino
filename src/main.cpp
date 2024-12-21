@@ -25,7 +25,7 @@ int main(int argc, char* args[]) {
     memset(framebuffer, 0, sizeof(framebuffer));
 
     Trex trex(3, 20, 150);
-    Cactus cactus(3, 0, 10);
+    Cactus cactus(3, 10);
     Ground ground(10, 30, 10);
 
     bool quit = false;
