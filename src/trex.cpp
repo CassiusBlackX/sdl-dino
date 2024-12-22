@@ -17,7 +17,7 @@ int Trex::pixels[][420] = {
     }
 };
 
-Trex::Trex(int scale, int s, int h) : scale(scale), y_speed(s), jump_height(h), status(HALTING) {
+Trex::Trex(int scale, int s) : scale(scale), y_speed(s), status(HALTING) {
     width = 21 * scale;
     height = 20 * scale;
     frame_id = 0;

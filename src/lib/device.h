@@ -13,7 +13,7 @@ void sleep(unsigned int us);
 void set_vram(int x, int yWord, unsigned int pixel);
 void commit_vram();
 
-int get_button_state();
+bool get_button_state();
 bool get_reset_button_state();
 bool get_jump_button_state();
 

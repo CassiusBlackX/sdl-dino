@@ -21,12 +21,13 @@ void render_game(unsigned* framebuffer) {
 
 int main() {
     // Clear the framebuffer
-    memset(framebuffer, 0, sizeof(framebuffer));
+    memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
+    render_game(framebuffer);
 
-    Trex trex(3, 20, 150);
-    Cactus cactus(3, 10);
-    Ground ground(10, 30, 10);
-    Score score(1, 10); 
+    Trex trex(1, 20);
+    Cactus cactus(1, 3);
+    Ground ground(1, 10, 3);
+    Score score(1, 3); 
 
     bool quit = false;
     bool start = false;
@@ -54,7 +55,7 @@ int main() {
         }
 
         // Clear the framebuffer
-        memset(framebuffer, 0, sizeof(framebuffer));
+        memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
 
         // Update game state
         trex.update(framebuffer);

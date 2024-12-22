@@ -5,7 +5,7 @@
 
 class Trex : public CollidableEntity {
 public:
-    Trex(int scale, int y_speed, int jump_height);
+    Trex(int scale, int y_speed);
     ~Trex() = default;
 
     void update(unsigned* framebuffer) override;
