@@ -20,6 +20,7 @@ void render_game(unsigned* framebuffer) {
 }
 
 int main() {
+    set_led(3);
     // Clear the framebuffer
     memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
     render_game(framebuffer);

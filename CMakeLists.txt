@@ -24,5 +24,5 @@ add_custom_command(TARGET game.elf POST_BUILD
     COMMAND python3 ${CMAKE_SOURCE_DIR}/script/split.py ${CMAKE_BINARY_DIR}/ram.mem
     COMMAND ${CMAKE_COMMAND} -E remove(${CMAKE_BINARY_DIR}/rom.bin ${CMAKE_BINARY_DIR}/rom.mem ${CMAKE_BINARY_DIR}/ram.bin ${CMAKE_BINARY_DIR}/ram.mem)
     COMMENT "Post-build steps to generate COE files"
-    
+    VERBATIM
 )

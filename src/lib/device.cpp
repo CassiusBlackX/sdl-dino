@@ -46,3 +46,10 @@ bool get_reset_button_state() {
 bool get_jump_button_state() {
     return static_cast<bool>(button_state & 2);
 }
+
+unsigned char uart_recv_ready() { return *UART_RECV_READY_ADDR; }
+unsigned char uart_send_ready() { return *UART_SEND_READY_ADDR; }
+unsigned char uart_recv() { return *UART_RECV_DATA_ADDR; }
+void uart_send(unsigned char data) { *UART_SEND_DATA_ADDR = data; }
+
+void set_led(unsigned int val) { *LED_ADDR = val; }
