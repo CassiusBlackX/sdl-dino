@@ -24,10 +24,10 @@ int main() {
     memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
     render_game(framebuffer);
 
-    Trex trex(1, 20);
+    Trex trex(1, 12);
     Cactus cactus(1, 3);
     Ground ground(1, 10, 3);
-    Score score(1, 3); 
+    Score score(1, 1); 
 
     bool quit = false;
     bool start = false;
