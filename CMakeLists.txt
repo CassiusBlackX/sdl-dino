@@ -20,8 +20,8 @@ add_custom_command(TARGET game.elf POST_BUILD
     COMMAND od -w4 -An --endian little -v -t x4 ${CMAKE_BINARY_DIR}/rom.bin > ${CMAKE_BINARY_DIR}/rom.mem
     COMMAND od -w4 -An --endian little -v -t x4 ${CMAKE_BINARY_DIR}/ram.bin > ${CMAKE_BINARY_DIR}/ram.mem
     COMMAND ${CMAKE_COMMAND} -E echo "Generating COE files..."
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/script/mem2coe.py ${CMAKE_BINARY_DIR}/rom.mem ${CMAKE_BINARY_DIR}/rom.coe
-    COMMAND python3 ${CMAKE_SOURCE_DIR}/script/split.py ${CMAKE_BINARY_DIR}/ram.mem
+    COMMAND python3 ${CMAKE_SOURCE_DIR}/script/tocoe.py ${CMAKE_BINARY_DIR}/rom.mem ${CMAKE_BINARY_DIR}/rom.coe
+    COMMAND ./toramcoe
     COMMAND ${CMAKE_COMMAND} -E remove(${CMAKE_BINARY_DIR}/rom.bin ${CMAKE_BINARY_DIR}/rom.mem ${CMAKE_BINARY_DIR}/ram.bin ${CMAKE_BINARY_DIR}/ram.mem)
     COMMENT "Post-build steps to generate COE files"
     VERBATIM

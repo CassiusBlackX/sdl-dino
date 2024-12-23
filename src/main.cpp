@@ -20,16 +20,6 @@ void render_game(unsigned* framebuffer) {
 }
 
 int main() {
-    int led_data = 5;
-    for (int i = 0; i < 10; i++) {
-        set_led(led_data);
-        if (uart_send_ready()) {
-            uart_send(led_data);
-        }
-        sleep(1000000 * 5);
-        led_data++;
-    }
-    sleep(0XFFFFFFFF);
     // Clear the framebuffer
     memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
     render_game(framebuffer);
@@ -44,8 +34,10 @@ int main() {
     bool jump = false;
     unsigned start_time = 0;
     unsigned frame_time = 0;
+    int led_data = 0;
 
     while (!quit) {
+        set_led(led_data++);
         start_time = time();
 
         if (get_button_state() != 0) {  // a button is pressed
@@ -65,7 +57,7 @@ int main() {
         }
 
         // Clear the framebuffer
-        memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
+        memset(framebuffer, 0, sizeof(framebuffer));
 
         // Update game state
         trex.update(framebuffer);

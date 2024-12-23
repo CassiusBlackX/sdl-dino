@@ -37,7 +37,7 @@ void write(string line,char c) {
 }
 
 int main() {
-    freopen("/users/franky/desktop/crt.ram.txt", "r", stdin);
+    freopen("./ram.mem", "r", stdin);
     string last_line=""; 
 	string line;
 

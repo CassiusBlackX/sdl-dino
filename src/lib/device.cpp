@@ -40,11 +40,11 @@ bool get_button_state() {
 }
 
 bool get_reset_button_state() {
-    return static_cast<bool>(button_state & 1);
+    return static_cast<bool>(button_state & 2);
 }
 
 bool get_jump_button_state() {
-    return static_cast<bool>(button_state & 2);
+    return static_cast<bool>(button_state & 1);
 }
 
 unsigned char uart_recv_ready() { return *UART_RECV_READY_ADDR; }
