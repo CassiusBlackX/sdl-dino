@@ -67,7 +67,7 @@ int main(int argc, char* args[]) {
     Trex trex(1, 12);
     Cactus cactus(1, 3);
     Ground ground(1, 10, 3);
-    Score score(1, 10);
+    Score score(1, 3);
 
     bool quit = false;
     bool reset = false;

@@ -21,7 +21,7 @@ private:
     bool begin;
     int x_speed;
     int scale;
-    static int hightest_score;
+    int hightest_score;
     int cur_score;
     static const unsigned digits_alphabet[37][35];  // 5x7 pixels
 };

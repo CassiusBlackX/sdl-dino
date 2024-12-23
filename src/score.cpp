@@ -4,8 +4,6 @@
 #define CHAR_WIDTH 5
 #define CHAR_HEIGHT 7
 
-int Score::hightest_score = 0;
-
 const unsigned Score::digits_alphabet[37][35] = {
     { // space
         0, 0, 0, 0, 0,
