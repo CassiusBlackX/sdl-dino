@@ -5,7 +5,7 @@
 
 class Trex : public CollidableEntity {
 public:
-    Trex(int scale, int y_speed, int jump_height);
+    Trex(int scale, int y_speed);
     ~Trex() = default;
 
     void update(unsigned* framebuffer) override;
@@ -28,7 +28,6 @@ private:
     int y_speed;
     int velocity_y;
     int scale;
-    int jump_height;  // max height of jump
     static int pixels[][420];  // 21x20 pixels
     int frame_id;
 };

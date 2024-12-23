@@ -1,6 +1,5 @@
 #include "cactus.h"
 #include "utils.h"
-#include <iostream>
 namespace {
 
 const unsigned Cactus_0[] = {
@@ -110,7 +109,6 @@ void Cactus::update(unsigned* framebuffer) {
 
     left -= x_speed;
     if (left + width < 0 || left > SCREEN_WIDTH) {
-        std::cout << "***********************out of bound!!!" << std::endl;
         return;
     }
 
