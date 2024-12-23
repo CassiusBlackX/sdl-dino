@@ -20,7 +20,16 @@ void render_game(unsigned* framebuffer) {
 }
 
 int main() {
-    set_led(3);
+    int led_data = 5;
+    for (int i = 0; i < 10; i++) {
+        set_led(led_data);
+        if (uart_send_ready()) {
+            uart_send(led_data);
+        }
+        sleep(1000000 * 5);
+        led_data++;
+    }
+    sleep(0XFFFFFFFF);
     // Clear the framebuffer
     memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
     render_game(framebuffer);
