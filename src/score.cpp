@@ -433,4 +433,37 @@ void Score::update(unsigned* framebuffer) {
             }
         }
     }
+
+    // draw start menu
+    if (!begin){
+        char start_menu[] = "middle to start";
+        for (int i = 0; i < 15; i++) {
+            int char_index = start_menu[i] - 'a' + 1 < 0 ? 0 : start_menu[i] - 'a' + 11;
+            for (int j = 0; j < CHAR_HEIGHT; j++) {
+                for (int k=0; k < CHAR_WIDTH; k++) {
+                    unsigned color = digits_alphabet[char_index][j * CHAR_WIDTH + k] == 1 ? 0xFFFF : 0x0000;
+                    for (int dy = 0; dy < scale; dy++) {
+                        for (int dx = 0; dx < scale; dx++) {
+                            utils::write_to_vga((START_Y_POS + j * scale + dy) * SCREEN_WIDTH + (START_X_POS + i * CHAR_WIDTH * scale + k * scale + dx), color, framebuffer);
+                        }
+                    }
+                }
+            }
+        }
+        char start_menu2[] = "up to jump";
+        for (int i = 0; i < 10; i++) {
+            int char_index = start_menu2[i] - 'a' + 1 < 0 ? 0 : start_menu2[i] - 'a' + 11;
+            for (int j = 0; j < CHAR_HEIGHT; j++) {
+                for (int k=0; k < CHAR_WIDTH; k++) {
+                    unsigned color = digits_alphabet[char_index][j * CHAR_WIDTH + k] == 1 ? 0xFFFF : 0x0000;
+                    for (int dy = 0; dy < scale; dy++) {
+                        for (int dx = 0; dx < scale; dx++) {
+                            utils::write_to_vga((START_Y_POS + (1 + CHAR_HEIGHT) * scale + j * scale + dy) * SCREEN_WIDTH + (START_X_POS + i * CHAR_WIDTH * scale + k * scale + dx), color, framebuffer);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

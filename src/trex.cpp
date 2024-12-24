@@ -69,7 +69,8 @@ void Trex::update(unsigned* framebuffer) {
 
     for (int i = 0; i < 21; ++i) {
         for (int j = 0; j < 20; ++j) {
-            unsigned color = pixels[frame_id][i * 20 + j];
+            // exchange trex background color with foreground color
+            unsigned color = pixels[frame_id][i * 20 + j] == 0xffff ? 0 : 0xffff;
             for (int dy = 0; dy < scale; ++dy) {
                 for (int dx = 0; dx < scale; ++dx) {
                     utils::write_to_vga((top + i * scale + dy) * SCREEN_WIDTH + (left + j * scale + dx), color, framebuffer);

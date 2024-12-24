@@ -112,7 +112,8 @@ void Cactus::update(unsigned* framebuffer) {
 
     for (int i = 0; i < origin_height; ++i) {
         for (int j = 0; j < origin_width; ++j) {
-            unsigned color = pixel[i * origin_width + j];
+            // exchange cactus background color with foreground color
+            unsigned color = pixel[i * origin_width + j] == 0xffff ? 0 : 0xffff;
             for (int dy = 0; dy < scale; ++dy) {
                 for (int dx = 0; dx < scale; ++dx) {
                     int x = left + j * scale + dx;

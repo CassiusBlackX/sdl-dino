@@ -15,9 +15,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-T ${CMAKE_SOURCE_DIR}/linker.ld")
 
 add_executable(game.elf src/lib/device.cpp src/main.cpp src/trex.cpp src/utils.cpp src/cactus.cpp src/ground.cpp src/score.cpp src/lib/mem.cpp)
 target_compile_definitions(game.elf PRIVATE
-    # DEBUG
     CARROT
-    RELEASE
 )
 
 add_custom_command(TARGET game.elf POST_BUILD

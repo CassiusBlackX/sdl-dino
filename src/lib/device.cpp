@@ -22,8 +22,8 @@ void sleep(unsigned int us) {
     unsigned int start = *CLOCK_ADDR;
     while (1) {
         if (*CLOCK_ADDR >= start + us) {
-        break;
-    }
+            break;
+        }
     }
 }
 

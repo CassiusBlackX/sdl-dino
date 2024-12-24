@@ -9,21 +9,16 @@
 #include "utils.h"
 
 unsigned framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];
-unsigned int displayMemory[16 * 16 * 8];
 
 void clearDisplayMemory() {
-#ifdef CARROT
-    memset(displayMemory, 0, sizeof(displayMemory));
-#else
-    memset(framebuffer, 0XFFFFFFFF, sizeof(framebuffer));
-#endif
+    memset(framebuffer, 0, sizeof(framebuffer));
 }
 
 void render_game(unsigned* framebuffer) {
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
         for (int j = 0; j < SCREEN_WIDTH; j += 8) {
-            unsigned val = framebuffer[i * SCREEN_WIDTH + j];
-            for (int k = 1; k < 8; k++) {
+            unsigned val = 0;
+            for (int k = 7; k >= 0; k--) {  // 反转处理顺序
                 val = (val << 4) | (framebuffer[i * SCREEN_WIDTH + j + k] & 0xF);
             }
             set_vram(i, j / 8, val);
@@ -57,21 +52,25 @@ int main() {
         set_led(led_data++);
         start_time = time();
 
-        if (get_button_state() != 0) {  // a button is pressed
-            jump = get_jump_button_state();
-            start = get_reset_button_state();
+        // if (get_button_state() != 0) {  // a button is pressed
+        //     jump = get_jump_button_state();
+        //     start = get_reset_button_state();
 
-            if (jump) {
-                trex.jump();
-            }
+        //     if (jump) {
+        //         trex.jump();
+        //     }
 
-            if (start) {
-                trex.start();
-                ground.start();
-                cactus.start();
-                score.start();
-            }
-        }
+        //     if (start) {
+        //         trex.start();
+        //         ground.start();
+        //         cactus.start();
+        //         score.start();
+        //     }
+
+        //     if (led_data > 0x3FF) {
+        //         trex.start();
+        //     }
+        // }
 
         // Clear the framebuffer
         clearDisplayMemory();
@@ -89,13 +88,13 @@ int main() {
         }
 
         // check crash
-        if (trex.crashed(cactus)) {
-            start = false;
-            trex.reset();
-            ground.reset();
-            cactus.reset();
-            score.reset();
-        }
+        // if (trex.crashed(cactus)) {
+        //     start = false;
+        //     trex.reset();
+        //     ground.reset();
+        //     cactus.reset();
+        //     score.reset();
+        // }
 
         // Render game state
         render_game(framebuffer);
@@ -103,7 +102,7 @@ int main() {
         // Calculate frame time and delay to maintain frame rate
         // on bare metal we cannot maintain frame rate!
         frame_time = time() - start_time;
-        unsigned expected_time = 1000000 / FPS;
+        unsigned expected_time = 10 / FPS;
         if (frame_time < expected_time) {
             sleep(expected_time - frame_time);
         }
