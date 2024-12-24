@@ -10,6 +10,8 @@
 #define SCORE_UP_BOUND 1
 #define SCORE_RIGHT_BOUND 1
 #define SCORE_MAX_CHARS 8
+#define START_X_POS 1
+#define START_Y_POS 50
 #define FPS 30
 namespace utils {
 
