@@ -28,7 +28,11 @@ void sleep(unsigned int us) {
 }
 
 void set_vram(int x, int yWord, unsigned int pixel) {
+    #ifdef CARROT
     VRAM_ADDR[x * VRAM_X / 8 + yWord] = pixel;
+    #else
+    VRAM_ADDR[x * VRAM_Y+ yWord] = pixel;
+    #endif
 }
 
 void commit_vram() { *VRAM_COMMIT_ADDR = 1; }

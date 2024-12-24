@@ -9,19 +9,33 @@
 #include "utils.h"
 
 unsigned framebuffer[SCREEN_WIDTH * SCREEN_HEIGHT];
+unsigned int displayMemory[16 * 16 * 8];
+
+void clearDisplayMemory() {
+#ifdef CARROT
+    memset(displayMemory, 0, sizeof(displayMemory));
+#else
+    memset(framebuffer, 0XFFFFFFFF, sizeof(framebuffer));
+#endif
+}
 
 void render_game(unsigned* framebuffer) {
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
-        for (int j = 0; j < SCREEN_WIDTH; j++) {
-            set_vram(j, i, framebuffer[i * SCREEN_WIDTH + j]);
+        for (int j = 0; j < SCREEN_WIDTH; j += 8) {
+            unsigned val = framebuffer[i * SCREEN_WIDTH + j];
+            for (int k = 1; k < 8; k++) {
+                val = (val << 4) | (framebuffer[i * SCREEN_WIDTH + j + k] & 0xF);
+            }
+            set_vram(i, j / 8, val);
         }
     }
     commit_vram();
 }
 
+
 int main() {
     // Clear the framebuffer
-    memset(framebuffer, 0xFFFFFFFF, sizeof(framebuffer));
+    clearDisplayMemory();
     render_game(framebuffer);
 
     Trex trex(1, 12);
@@ -35,7 +49,10 @@ int main() {
     unsigned start_time = 0;
     unsigned frame_time = 0;
     int led_data = 0;
-
+    trex.start();
+    ground.start();
+    cactus.start();
+    // score.start();
     while (!quit) {
         set_led(led_data++);
         start_time = time();
@@ -57,7 +74,7 @@ int main() {
         }
 
         // Clear the framebuffer
-        memset(framebuffer, 0, sizeof(framebuffer));
+        clearDisplayMemory();
 
         // Update game state
         trex.update(framebuffer);
@@ -91,7 +108,5 @@ int main() {
             sleep(expected_time - frame_time);
         }
     }
-
-
     return 0;
 }
