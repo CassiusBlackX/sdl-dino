@@ -13,13 +13,9 @@
 #define LED_ADDR ((volatile unsigned int*)0xfbadc0fe)
 
 #define BUTTON_ADDR ((volatile unsigned char*)0xfbadc100)
-#ifdef CARROT
 #define VRAM_X 128 // X is vertical
 #define VRAM_Y 128 // Y is horizontal
-#else
-#define VRAM_X 640
-#define VRAM_Y 480
-#endif
+
 
 unsigned int time();
 void sleep(unsigned int us);

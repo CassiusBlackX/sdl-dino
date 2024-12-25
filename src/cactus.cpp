@@ -19,9 +19,6 @@ const unsigned Cactus_2[] = {
 };
 constexpr unsigned width_2 = 13;
 constexpr unsigned height_2 = 24;
-
-constexpr unsigned max_obstacles = 2;
-
 }
 
 Cactus::Cactus(int scale, int speed) : scale(scale), x_speed(speed), begin(false) {
@@ -98,6 +95,8 @@ void Cactus::reset() {
     }
     width = origin_width * scale;
     height = origin_height * scale;
+    top = GROUND_Y_POS - height - GROUND_DISTANCE;
+    left = SCREEN_WIDTH;
 }
 
 void Cactus::update(unsigned* framebuffer) {

@@ -28,11 +28,7 @@ void sleep(unsigned int us) {
 }
 
 void set_vram(int x, int yWord, unsigned int pixel) {
-    #ifdef CARROT
     VRAM_ADDR[x * VRAM_X / 8 + yWord] = pixel;
-    #else
-    VRAM_ADDR[x * VRAM_Y+ yWord] = pixel;
-    #endif
 }
 
 void commit_vram() { *VRAM_COMMIT_ADDR = 1; }
@@ -44,11 +40,11 @@ bool get_button_state() {
 }
 
 bool get_reset_button_state() {
-    return static_cast<bool>(button_state & 2);
+    return static_cast<bool>(button_state & 1);
 }
 
 bool get_jump_button_state() {
-    return static_cast<bool>(button_state & 1);
+    return static_cast<bool>(button_state & 16);
 }
 
 unsigned char uart_recv_ready() { return *UART_RECV_READY_ADDR; }

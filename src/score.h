@@ -17,6 +17,8 @@ public:
     int get_width() const override { return width; }
     int get_height() const override { return height; }
 
+    void debug(int val1, int val2, unsigned* framebuffer);
+
 private:
     bool begin;
     int x_speed;

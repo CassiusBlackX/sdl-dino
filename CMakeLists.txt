@@ -10,13 +10,12 @@ set(CMAKE_C_COMPILER riscv64-unknown-elf-gcc)
 set(CMAKE_CXX_COMPILER riscv64-unknown-elf-g++)
 set(CMAKE_ASM_COMPILER riscv64-unknown-elf-as)
 
-set(CMAKE_CXX_FLAGS " -O2 -march=rv32im -mabi=ilp32 -nostartfiles -nodefaultlibs -nostdlib -fno-exceptions -fno-rtti -ffreestanding -fno-builtin -mno-relax -fno-PIE")
+set(CMAKE_CXX_FLAGS " -O1 -march=rv32im -mabi=ilp32 -nostartfiles -nodefaultlibs -nostdlib -fno-exceptions -fno-rtti -ffreestanding -fno-builtin -mno-relax -fno-PIE")
 set(CMAKE_EXE_LINKER_FLAGS "-T ${CMAKE_SOURCE_DIR}/linker.ld")
 
 add_executable(game.elf src/lib/device.cpp src/main.cpp src/trex.cpp src/utils.cpp src/cactus.cpp src/ground.cpp src/score.cpp src/lib/mem.cpp)
-target_compile_definitions(game.elf PRIVATE
-    CARROT
-)
+
+# add_executable(toramcoe script/toramcoe.cpp)
 
 add_custom_command(TARGET game.elf POST_BUILD
     COMMAND riscv64-unknown-elf-objcopy ${CMAKE_BINARY_DIR}/game.elf --dump-section .text=rom.bin --dump-section .data=ram.bin

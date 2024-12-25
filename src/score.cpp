@@ -467,3 +467,61 @@ void Score::update(unsigned* framebuffer) {
     }
 
 }
+
+void Score::debug(int val1, int val2, unsigned* framebuffer) {
+    char debug_char[] = "frame ";
+    int val_copy = val1;
+    int val_digist[SCORE_MAX_CHARS];
+    for (int i = 0; i < SCORE_MAX_CHARS; i++) {
+        val_digist[i] = val_copy % 10;
+        val_copy /= 10;
+    }
+    int debug_char_index[6 + SCORE_MAX_CHARS];
+    for (int i = 0; i < 6; i++) {
+        debug_char_index[i] = debug_char[i] - 'a' + 1 < 0 ? 0 : debug_char[i] - 'a' + 11;
+    }
+    for (int i = 0; i < SCORE_MAX_CHARS; i++) {
+        debug_char_index[6 + i] = val_digist[SCORE_MAX_CHARS - 1 - i] + 1;
+    }
+    for (int i = 0; i < 6 + SCORE_MAX_CHARS; i++) {
+        int char_index = debug_char_index[i];
+        for (int j = 0; j < CHAR_HEIGHT; j++) {
+            for (int k=0; k < CHAR_WIDTH; k++) {
+                unsigned color = digits_alphabet[char_index][j * CHAR_WIDTH + k] == 1 ? 0xFFFF : 0x0000;
+                for (int dy = 0; dy < scale; dy++) {
+                    for (int dx = 0; dx < scale; dx++) {
+                        utils::write_to_vga((START_Y_POS + j * scale + dy) * SCREEN_WIDTH + (START_X_POS + i * CHAR_WIDTH * scale + k * scale + dx), color, framebuffer);
+                    }
+                }
+            }
+        }
+    }
+
+    val_copy = val2;
+    for (int i = 0; i < SCORE_MAX_CHARS; i++) {
+        val_digist[i] = val_copy % 10;
+        val_copy /= 10;
+    }
+    char debug_char2[] = "expec ";
+    debug_char_index[6 + SCORE_MAX_CHARS];
+    for (int i = 0; i < 6; i++) {
+        debug_char_index[i] = debug_char2[i] - 'a' + 1 < 0 ? 0 : debug_char2[i] - 'a' + 11;
+    }
+    for (int i = 0; i < SCORE_MAX_CHARS; i++) {
+        debug_char_index[6 + i] = val_digist[SCORE_MAX_CHARS - 1 - i] + 1;
+    }
+    for (int i = 0; i < 6 + SCORE_MAX_CHARS; i++) {
+        int char_index = debug_char_index[i];
+        for (int j = 0; j < CHAR_HEIGHT; j++) {
+            for (int k=0; k < CHAR_WIDTH; k++) {
+                unsigned color = digits_alphabet[char_index][j * CHAR_WIDTH + k] == 1 ? 0xFFFF : 0x0000;
+                for (int dy = 0; dy < scale; dy++) {
+                    for (int dx = 0; dx < scale; dx++) {
+                        utils::write_to_vga((START_Y_POS + (1 + CHAR_HEIGHT) * scale + j * scale + dy) * SCREEN_WIDTH + (START_X_POS + i * CHAR_WIDTH * scale + k * scale + dx), color, framebuffer);
+
+                    }
+                }
+            }
+        }
+    }
+}
