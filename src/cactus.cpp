@@ -20,7 +20,6 @@ const unsigned Cactus_2[] = {
 constexpr unsigned width_2 = 13;
 constexpr unsigned height_2 = 24;
 
-constexpr unsigned max_obstacles = 2;
 
 }
 
