@@ -94,10 +94,12 @@ int main() {
         unsigned expected_time = 1e5 / FPS;
 
         // sleep using a loop, writing great amount of data into memory
-        int dummy = 1e4;
+        static int dummy = 1e4;
         char nothing[dummy];
         while (true) {
-            for (int j = 0; j < dummy * 2; j++) {
+            static int dummy_index = 0;
+            dummy_index = (dummy_index + 1) % dummy;
+            for (int j = dummy_index; j < dummy * 2; j++) {
                 nothing[j % dummy] = utils::rand() % 256;
             }
             if (time() - start_time > expected_time) {
