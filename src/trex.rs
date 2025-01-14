@@ -3,8 +3,8 @@ use crate::entity::Entity;
 use crate::utils::write_to_vga;
 
 // trex private properties
-const TREX_HEIGHT: usize = 20;
-const TREX_WIDTH: usize = 21;
+const TREX_HEIGHT: usize = 21;
+const TREX_WIDTH: usize = 20;
 #[allow(dead_code)]
 const FRAME_COUNT: usize = 4;  // total 4 frames
 
@@ -128,7 +128,7 @@ impl<'a> Entity for Trex<'a> {
                 let color = self.pixels[self.frame_id][i * TREX_WIDTH + j];
                 for dy in 0..self.scale as usize {
                     for dx in 0..self.scale as usize {
-                        let address: usize = (self.top as usize + i * self.scale as usize + dy) * SCREEN_WIDTH as usize + (self.left as usize + j * self.scale as usize + dx);
+                        let address: usize = (self.top as usize + i * self.scale + dy) * SCREEN_WIDTH + (self.left as usize + j * self.scale + dx);
                         write_to_vga(address, color, frame_buffer);
                     }
                 }
