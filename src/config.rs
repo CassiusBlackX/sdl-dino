@@ -1,0 +1,9 @@
+pub const SCREEN_WIDTH: usize = 1920;
+pub const SCREEN_HEIGHT: usize = 1080;
+pub const GROUND_HEIGHT: usize = 1040;
+pub const GRAVITY: i32 = 8;
+pub const TREX_X_POS: i32 = 10;
+pub const SCORE_MAX_CHARS: usize = 8;
+pub const SCORE_UP_BOUND: usize = 10;
+pub const SCORE_RIGHT_BOUND: usize = 10;
+pub const FPS: usize = 30;
