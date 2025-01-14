@@ -65,7 +65,7 @@ impl<'a> Trex<'a> {
     pub fn jump(&mut self) {
         if self.status == Status::Running {
             self.status = Status::Jumping;
-            self.velocity_y -= self.y_speed;  // BUG it should be a value, instead of a number
+            self.velocity_y -= self.y_speed;
         }
     }
 
@@ -116,6 +116,7 @@ impl<'a> Entity for Trex<'a> {
                 if self.top >= self.initial_y {
                     self.top = self.initial_y;
                     self.status = Status::Running;
+                    self.velocity_y = 0;
                 }
             }
             Status::Halting => {
@@ -129,7 +130,9 @@ impl<'a> Entity for Trex<'a> {
                 for dy in 0..self.scale as usize {
                     for dx in 0..self.scale as usize {
                         let address: usize = (self.top as usize + i * self.scale + dy) * SCREEN_WIDTH + (self.left as usize + j * self.scale + dx);
-                        write_to_vga(address, color, frame_buffer);
+                        if address < SCREEN_WIDTH * GROUND_HEIGHT {
+                            write_to_vga(address, color, frame_buffer);
+                        }
                     }
                 }
             }

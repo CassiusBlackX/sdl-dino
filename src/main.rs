@@ -8,6 +8,8 @@ mod utils;
 
 // use crate::game::start;
 
+use std::time::Duration;
+
 use bytemuck::cast_slice;
 
 
@@ -34,7 +36,6 @@ fn render_game(canvas: &mut sdl2::render::Canvas<sdl2::video::Window>, texture: 
 }
 
 fn main() -> Result<(), String> {
-    println!("Hello, world!");
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
 
@@ -59,15 +60,16 @@ fn main() -> Result<(), String> {
 
     let mut event_pump = sdl_context.event_pump()?;
 
+    let frame_duration = 1000 / FPS;
 
     'running: loop {
+        let frame_start = std::time::Instant::now();
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit { .. } => break 'running,
                 Event::KeyDown { keycode: Some(Keycode::Escape), .. } => break 'running,
                 Event::KeyDown { keycode: Some(Keycode::Up), .. } => {
                     trex.jump();
-                    println!("Jump");
                 }
                 Event::KeyDown { keycode: Some(Keycode::Down), .. } => {
                     cactus.start();
@@ -101,6 +103,11 @@ fn main() -> Result<(), String> {
             render_game(&mut canvas, &mut texture, &frame_buffer);
         }
 
+        let frame_end = std::time::Instant::now();
+        let frame_time = frame_end.duration_since(frame_start).as_millis() as usize;
+        if frame_time < frame_duration {
+            std::thread::sleep(Duration::from_millis(frame_time as u64));
+        }
     }
 
     Ok(())

@@ -430,7 +430,7 @@ impl<'a> Entity for Text<'a> {
         let mut highest_score_char_index = [0; 14 + SCORE_MAX_CHARS];
         for (i, c) in highest_score_str.chars().enumerate() {
             highest_score_char_index[i] = if c >= 'a' && c <= 'z' {
-                c as usize - 'a' as usize + 1
+                c as usize - 'a' as usize + 11
             } else {
                 0
             };
@@ -462,7 +462,7 @@ impl<'a> Entity for Text<'a> {
         let mut cur_score_char_index = [0; 14 + SCORE_MAX_CHARS];
         for (i, c) in cur_score_str.chars().enumerate() {
             cur_score_char_index[i] = if c >= 'a' && c <= 'z' {
-                c as usize - 'a' as usize + 1
+                c as usize - 'a' as usize + 11
             } else {
                 0
             };
