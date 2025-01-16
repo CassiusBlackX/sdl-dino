@@ -102,9 +102,6 @@ int main() {
             for (int j = dummy_index; j < dummy * 2; j++) {
                 nothing[j % dummy] = utils::rand() % 256;
             }
-            if (time() - start_time > expected_time) {
-                break;
-            }
         }
 
         // Render game state
