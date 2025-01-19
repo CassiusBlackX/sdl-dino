@@ -1,1 +1,9 @@
 /target
+
+# ignore useless dynamic and static libraries
+*.dll
+*.lib
+*.pdb
+
+# ignore vscode directory
+.vscode/
