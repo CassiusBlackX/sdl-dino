@@ -7,3 +7,6 @@
 
 # ignore vscode directory
 .vscode/
+
+# ignore cargo.lock because this is a dev project but not a prooduct for customers
+Cargo.lock
