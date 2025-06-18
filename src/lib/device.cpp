@@ -9,8 +9,8 @@ __attribute__((section(".stack"), used)) unsigned* __stack_init = &__stacktop;
 extern int main();
 
 __attribute__((section(".text.start"))) __attribute__((naked)) void _start() {
-asm("mv sp, %0\n\t" ::"r"(&__stacktop));
-asm("j %0\n\t" ::"i"(&main));
+  asm("mv sp, %0\n\t" ::"r"(&__stacktop));
+  asm("j %0\n\t" ::"i"(&main));
 }
 }
 
